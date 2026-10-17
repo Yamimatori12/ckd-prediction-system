@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CKD Prediction Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container result-box">
+        <h1>Prediction Result</h1>
+
+        <!-- Result Status Panel -->
+        {% if result == 'CKD Detected' %}
+        <div class="status-panel status-detected">
+            <div class="status-header">
+                <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                    <line x1="12" y1="9" x2="12" y2="13" />
+                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>
+                <h2>Chronic Kidney Disease Detected</h2>
+            </div>
+            <p class="status-subtitle">The machine learning model predicts clinical signs of Chronic Kidney Disease
+                based on patient parameters.</p>
+        </div>
+        {% elif result == 'No CKD Detected' %}
+        <div class="status-panel status-normal">
+            <div class="status-header">
+                <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+                <h2>No CKD Detected</h2>
+            </div>
+            <p class="status-subtitle">The machine learning model predicts a normal status with no detected signs of
+                kidney disease.</p>
+        </div>
+        {% else %}
+        <div class="status-panel status-error">
+            <div class="status-header">
+                <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="8" x2="12" y2="12" />
+                    <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+                <h2>Calculation Error</h2>
+            </div>
+            <p class="status-subtitle">{{ stage_description }}</p>
+        </div>
+        {% endif %}
+
+        {% if result != 'Error' %}
+        <!-- Detailed Results & Gauge Grid -->
+        <div class="result-details-grid">
+
+            <div class="details-card">
+                <div class="detail-row">
+                    <span class="detail-label">Staging Category</span>
+                    <span
+                        class="detail-value stage-badge-large stage-{{ stage.replace('Stage ', '').lower() if stage != 'Not Applicable' else 'none' }}">{{
+                        stage }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Stage Description</span>
+                    <p class="detail-desc">{{ stage_description }}</p>
+                </div>
+            </div>
+
+            {% if egfr != '-' %}
+            {% set egfr_num = egfr | float %}
+            {% set egfr_pct = (egfr_num / 120 * 100) if egfr_num <= 120 else 100 %}
+            <div class="details-card gauge-panel">
+                <div class="egfr-gauge-container">
+                    <span class="egfr-value-title">Estimated eGFR Level</span>
+                    <div class="egfr-huge-val">{{ egfr }} <span class="egfr-unit">mL/min/1.73m²</span></div>
+
+                    <div class="egfr-gauge-track-wrapper">
+                        <div class="egfr-gauge-track" id="egfrTrack">
+                            <div class="egfr-gauge-bar" id="egfrBar" style="width: 0%;" data-target="{{ egfr_pct | round(2) }}"></div>
+                        </div>
+                        <div class="egfr-gauge-pointer" id="egfrPointer" style="left: 0%;"></div>
+                        <div class="egfr-gauge-labels">
+                            <div class="egfr-marker" style="left: 12.5%;">15</div>
+                            <div class="egfr-marker" style="left: 25%;">30</div>
+                            <div class="egfr-marker" style="left: 50%;">60</div>
+                            <div class="egfr-marker" style="left: 75%;">90</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+    </div>
+    {% endif %}
+
+    <div class="reference-section">
+        <h3>eGFR Stages Reference Chart</h3>
+        <div class="stages-list">
+            <div class="stage-item {% if stage == 'Stage 1' %}active-stage stage-border-1{% endif %}">
+                <span class="stage-badge stage-1">Stage 1</span>
+                <span class="stage-range">≥ 90 mL/min</span>
+                <p class="stage-desc">
+                    Normal or high kidney function; signs of kidney damage may be present.
+                    {% if stage == 'Stage 1' %}<span class="active-indicator-text">Your Stage</span>{% endif %}
+                </p>
+            </div>
+            <div class="stage-item {% if stage == 'Stage 2' %}active-stage stage-border-2{% endif %}">
+                <span class="stage-badge stage-2">Stage 2</span>
+                <span class="stage-range">60–89 mL/min</span>
+                <p class="stage-desc">
+                    Slightly decreased kidney function; signs of kidney damage.
+                    {% if stage == 'Stage 2' %}<span class="active-indicator-text">Your Stage</span>{% endif %}
+                </p>
+            </div>
+            <div class="stage-item {% if stage == 'Stage 3a' %}active-stage stage-border-3a{% endif %}">
+                <span class="stage-badge stage-3a">Stage 3a</span>
+                <span class="stage-range">45–59 mL/min</span>
+                <p class="stage-desc">
+                    Mildly to moderately decreased kidney function.
+                    {% if stage == 'Stage 3a' %}<span class="active-indicator-text">Your Stage</span>{% endif %}
+                </p>
+            </div>
+            <div class="stage-item {% if stage == 'Stage 3b' %}active-stage stage-border-3b{% endif %}">
+                <span class="stage-badge stage-3b">Stage 3b</span>
+                <span class="stage-range">30–44 mL/min</span>
+                <p class="stage-desc">
+                    Moderately to severely decreased kidney function.
+                    {% if stage == 'Stage 3b' %}<span class="active-indicator-text">Your Stage</span>{% endif %}
+                </p>
+            </div>
+            <div class="stage-item {% if stage == 'Stage 4' %}active-stage stage-border-4{% endif %}">
+                <span class="stage-badge stage-4">Stage 4</span>
+                <span class="stage-range">15–29 mL/min</span>
+                <p class="stage-desc">
+                    Severely decreased kidney function.
+                    {% if stage == 'Stage 4' %}<span class="active-indicator-text">Your Stage</span>{% endif %}
+                </p>
+            </div>
+            <div class="stage-item {% if stage == 'Stage 5' %}active-stage stage-border-5{% endif %}">
+                <span class="stage-badge stage-5">Stage 5</span>
+                <span class="stage-range">&lt; 15 mL/min</span>
+                <p class="stage-desc">
+                    Kidney failure (very severe or end-stage).
+                    {% if stage == 'Stage 5' %}<span class="active-indicator-text">Your Stage</span>{% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <p class="disclaimer">
+        Disclaimer: This system is for screening and educational purposes only.
+        It is not a final medical diagnosis. Please consult a healthcare professional
+        for proper clinical assessment.
+    </p>
+
+    <a href="/" class="back-btn">
+        <svg class="btn-icon-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12" />
+            <polyline points="12 19 5 12 12 5" />
+        </svg>
+        <span>Back to Home</span>
+    </a>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Machine Learning Healthcare Screening System. All rights reserved.</p>
+        <p class="footer-sub">This system is designed as a screening tool. It does not replace professional medical
+            advice, diagnosis, or treatment.</p>
+    </footer>
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            var bar     = document.getElementById('egfrBar');
+            var pointer = document.getElementById('egfrPointer');
+            var track   = document.getElementById('egfrTrack');
+
+            if (bar && track) {
+                var target = parseFloat(bar.getAttribute('data-target')) || 0;
+
+                // Size the bar's gradient to match the track's actual pixel width
+                // so colour stops (red→green) align correctly across the full scale
+                var trackW = track.offsetWidth;
+                bar.style.backgroundSize = trackW + 'px 100%';
+
+                setTimeout(function () {
+                    bar.style.width = target + '%';
+                    if (pointer) {
+                        pointer.style.left = target + '%';
+                    }
+                }, 120);
+            }
+        });
+    </script>
+
+</body>
+
+</html>
