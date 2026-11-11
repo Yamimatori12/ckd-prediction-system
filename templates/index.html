@@ -1,45 +1,193 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>CKD Prediction System</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CKD Clinical Intelligence & Screening System</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 
 <body>
 
     <div class="container">
-        <div class="badge">Machine Learning Healthcare Screening System</div>
-        <h1>Chronic Kidney Disease Prediction System</h1>
-        <p class="subtitle">
-            Enter patient clinical information to predict CKD status and estimate CKD stage if CKD is detected.
-        </p>
 
-        <div class="note-box">
-            <strong>Important:</strong>
-            Please enter values based on the patient laboratory test report or clinical record.
-            Do not guess the values if the test result is unavailable.
+        <!-- Top Brand Navigation / Header -->
+        <header class="brand-header">
+            <div class="brand-identity">
+                <div class="brand-icon-box">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07l14.14-14.14" />
+                    </svg>
+                </div>
+                <div class="brand-titles">
+                    <h3>NephroScan AI</h3>
+                    <span>Clinical Decision Support System</span>
+                </div>
+            </div>
+            <div class="brand-badge">
+                <span class="status-dot"></span>
+                <span>CKD-EPI 2021 Validated</span>
+            </div>
+        </header>
+
+        <!-- Main Header Hero -->
+        <div class="header-hero">
+            <div class="header-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                </svg>
+                <span>Machine Learning Healthcare Screening</span>
+            </div>
+            <h1>Chronic Kidney Disease <span class="gradient-text">Prediction System</span></h1>
+            <p class="subtitle">
+                Enter comprehensive patient clinical laboratory measurements to evaluate Chronic Kidney Disease (CKD)
+                risk and estimate disease staging.
+            </p>
         </div>
 
-        <form action="/predict" method="POST">
-            
-            <!-- Section: Patient Information -->
+        <!-- Section 1: CKD Introduction & Kidney Showcase Section -->
+        <section class="ckd-intro-card">
+            <div class="intro-content">
+                <div class="intro-tag">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" y1="16" x2="12" y2="12" />
+                        <line x1="12" y1="8" x2="12.01" y2="8" />
+                    </svg>
+                    <span>Clinical Overview</span>
+                </div>
+                <h2>Understanding Chronic Kidney Disease (CKD)</h2>
+                <p class="intro-text">
+                    <strong>Chronic Kidney Disease (CKD)</strong> is a progressive medical condition where the kidneys
+                    gradually lose their vital ability to filter wastes, toxins, and excess fluids from the blood.
+                    Healthy kidneys process roughly <strong>120 to 150 quarts of blood daily</strong> to maintain
+                    essential electrolyte and biochemical balance.
+                </p>
+                <p class="intro-text">
+                    Often termed a <strong>"silent disease"</strong>, CKD frequently exhibits few or no noticeable
+                    symptoms during its early stages (Stages 1–3). Routine biochemical screening via <em>serum
+                        creatinine, eGFR, urine albumin</em>, and clinical indicators provides the earliest window to
+                    halt or delay disease progression.
+                </p>
+
+                <div class="intro-highlights">
+                    <div class="highlight-box">
+                        <span class="highlight-icon">🫀</span>
+                        <div class="highlight-title">Filtration & Balance</div>
+                        <p class="highlight-desc">Maintains fluid homeostasis, electrolyte levels, and regulates blood
+                            pressure.</p>
+                    </div>
+                    <div class="highlight-box">
+                        <span class="highlight-icon">⚡</span>
+                        <div class="highlight-title">Silent Progression</div>
+                        <p class="highlight-desc">Up to 90% of individuals with early kidney damage show no apparent
+                            symptoms.</p>
+                    </div>
+                    <div class="highlight-box">
+                        <span class="highlight-icon">🎯</span>
+                        <div class="highlight-title">Early Detection</div>
+                        <p class="highlight-desc">Timely clinical intervention slows loss of nephrons and prevents renal
+                            failure.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kidney Visual Showcase -->
+            <div class="kidney-showcase">
+                <div class="kidney-image-wrapper">
+                    <img src="{{ url_for('static', filename='images/kidney.jpg') }}"
+                        alt="Medical 3D Illustration of Human Kidneys with Renal Anatomy" class="kidney-img">
+                    <div class="kidney-badge-overlay">
+                        <div>
+                            <div class="kidney-badge-text">Human Renal System</div>
+                            <div class="kidney-badge-sub">~1 Million Nephrons per Kidney</div>
+                        </div>
+                        <div class="kidney-pulse-indicator">
+                            <span>Diagnostic Unit</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advisory / Notice Box -->
+        <div class="note-box">
+            <svg class="note-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            <div>
+                <strong>Clinical Data Notice:</strong>
+                Please enter exact laboratory test values derived from certified diagnostic lab reports or electronic
+                health records (EHR). Do not extrapolate or guess values if a specific test result is unavailable.
+            </div>
+        </div>
+
+        <!-- Quick Clinical Demo Presets -->
+        <div class="demo-actions-card">
+            <div class="demo-actions-info">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                </svg>
+                <span>Quick Test Presets:</span>
+            </div>
+            <div class="demo-btn-group">
+                <button type="button" class="btn-demo btn-demo-healthy" onclick="fillHealthySample()">
+                    <span>✓ Normal Sample</span>
+                </button>
+                <button type="button" class="btn-demo btn-demo-ckd" onclick="fillStage1Sample()">
+                    <span>⚠ Stage 1 Sample</span>
+                </button>
+                <button type="button" class="btn-demo btn-demo-ckd" onclick="fillStage2Sample()">
+                    <span>⚠ Stage 2 Sample</span>
+                </button>
+                <button type="button" class="btn-demo btn-demo-ckd" onclick="fillAdvancedCkdSample()">
+                    <span>⚠ Advanced CKD Sample</span>
+                </button>
+                <button type="button" class="btn-demo btn-demo-clear" onclick="clearForm()">
+                    <span>Reset</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Predictive Screening Form -->
+        <form action="/predict" method="POST" id="predictionForm">
+
+            <!-- Section 1: Patient Information -->
             <div class="form-section-card">
                 <h2>
-                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    <span>Patient Information</span>
+                    <div class="section-icon-container">
+                        <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
+                    </div>
+                    <span>1. Patient Demographics</span>
                 </h2>
                 <div class="form-grid">
                     <div class="form-field">
-                        <label>Age</label>
-                        <small>Patient age in years. Example: 50</small>
-                        <input type="number" name="age" step="any" placeholder="Example: 50" required>
+                        <label for="age">Patient Age (years)</label>
+                        <small>Chronological age in years. Example: 50</small>
+                        <input type="number" id="age" name="age" step="any" placeholder="e.g. 50" required min="1"
+                            max="120">
                     </div>
                     <div class="form-field">
-                        <label>Sex</label>
-                        <small>Required for eGFR and CKD stage estimation.</small>
-                        <select name="sex" required>
-                            <option value="">Select sex</option>
+                        <label for="sex">Biological Sex</label>
+                        <small>Required for precise eGFR (CKD-EPI 2021) calculation.</small>
+                        <select id="sex" name="sex" required>
+                            <option value="">-- Select Biological Sex --</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
                         </select>
@@ -47,194 +195,280 @@
                 </div>
             </div>
 
-            <!-- Section: Urine Test Attributes -->
+            <!-- Section 2: Urine Test Attributes -->
             <div class="form-section-card">
                 <h2>
-                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-11-7-11S5 10.7 5 15a7 7 0 0 0 7 7z"/></svg>
-                    <span>Urine Test Attributes</span>
+                    <div class="section-icon-container">
+                        <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-11-7-11S5 10.7 5 15a7 7 0 0 0 7 7z" />
+                        </svg>
+                    </div>
+                    <span>2. Urinalysis Parameters</span>
                 </h2>
                 <div class="form-grid">
                     <div class="form-field">
-                        <label>Specific Gravity (sg)</label>
-                        <small>From urine test report. Example: 1.010</small>
-                        <input type="number" name="sg" step="any" placeholder="Example: 1.010" required>
+                        <label for="sg">Specific Gravity (sg)</label>
+                        <small>Urine concentration capacity. Typical range: 1.005 – 1.030</small>
+                        <input type="number" id="sg" name="sg" step="any" placeholder="e.g. 1.020" required>
                     </div>
                     <div class="form-field">
-                        <label>Albumin (al)</label>
-                        <small>Urine albumin level (0 to 5). Example: 3</small>
-                        <input type="number" name="al" step="any" placeholder="Example: 3" required>
+                        <label for="al">Urine Albumin Level (al)</label>
+                        <small>Microalbuminuria scale rating (0 = Nil to 5 = Severe)</small>
+                        <input type="number" id="al" name="al" step="any" placeholder="0 to 5 (e.g. 1)" required min="0"
+                            max="5">
                     </div>
                     <div class="form-field">
-                        <label>Sugar (su)</label>
-                        <small>Urine sugar level (0 to 5). Example: 0</small>
-                        <input type="number" name="su" step="any" placeholder="Example: 0" required>
+                        <label for="su">Urine Sugar Level (su)</label>
+                        <small>Glycosuria severity rating (0 = Normal to 5 = High)</small>
+                        <input type="number" id="su" name="su" step="any" placeholder="0 to 5 (e.g. 0)" required min="0"
+                            max="5">
                     </div>
                     <div class="form-field">
-                        <label>Red Blood Cells (rbc)</label>
-                        <small>Choose based on urine test result.</small>
-                        <select name="rbc" required>
-                            <option value="0">Abnormal</option>
-                            <option value="1">Normal</option>
+                        <label for="rbc">Red Blood Cells in Urine (rbc)</label>
+                        <small>Microscopic urinalysis erythrocyte evaluation</small>
+                        <select id="rbc" name="rbc" required>
+                            <option value="1">Normal (No hematuria)</option>
+                            <option value="0">Abnormal (Hematuria detected)</option>
                         </select>
                     </div>
                     <div class="form-field">
-                        <label>Pus Cell (pc)</label>
-                        <small>Choose based on urine test result.</small>
-                        <select name="pc" required>
-                            <option value="0">Abnormal</option>
-                            <option value="1">Normal</option>
+                        <label for="pc">Pus Cells (pc)</label>
+                        <small>Leukocytes in sediment indicating inflammation or infection</small>
+                        <select id="pc" name="pc" required>
+                            <option value="1">Normal (&lt; 5 WBCs / HPF)</option>
+                            <option value="0">Abnormal (Pyuria detected)</option>
                         </select>
                     </div>
                     <div class="form-field">
-                        <label>Pus Cell Clumps (pcc)</label>
-                        <small>Choose whether pus cell clumps are present.</small>
-                        <select name="pcc" required>
-                            <option value="0">No</option>
-                            <option value="1">Yes</option>
+                        <label for="pcc">Pus Cell Clumps (pcc)</label>
+                        <small>Aggregate pyuria or bacterial clumps</small>
+                        <select id="pcc" name="pcc" required>
+                            <option value="0">No (Absent)</option>
+                            <option value="1">Yes (Present)</option>
                         </select>
                     </div>
                     <div class="form-field">
-                        <label>Bacteria (ba)</label>
-                        <small>Choose whether bacteria are present in urine.</small>
-                        <select name="ba" required>
-                            <option value="0">No</option>
-                            <option value="1">Yes</option>
+                        <label for="ba">Bacteria (ba)</label>
+                        <small>Bacteriuria detection from urine microscopy</small>
+                        <select id="ba" name="ba" required>
+                            <option value="0">No (Absent)</option>
+                            <option value="1">Yes (Present)</option>
                         </select>
                     </div>
                 </div>
             </div>
 
-            <!-- Section: Blood Test Attributes -->
+            <!-- Section 3: Blood Test Attributes -->
             <div class="form-section-card">
                 <h2>
-                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-                    <span>Blood Test Attributes</span>
+                    <div class="section-icon-container">
+                        <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                        </svg>
+                    </div>
+                    <span>3. Hematological & Serum Biochemistry</span>
                 </h2>
                 <div class="form-grid">
                     <div class="form-field">
-                        <label>Blood Pressure (bp) mmHg</label>
-                        <small>Blood pressure reading. Example: 80</small>
-                        <input type="number" name="bp" step="any" placeholder="Example: 80" required>
+                        <label for="bp">Blood Pressure (bp) mmHg</label>
+                        <small>Diastolic/mean arterial baseline. e.g. 80</small>
+                        <input type="number" id="bp" name="bp" step="any" placeholder="e.g. 80" required>
                     </div>
                     <div class="form-field">
-                        <label>Blood Glucose Random (bgr) mg/dL</label>
-                        <small>Random blood glucose. Example: 150</small>
-                        <input type="number" name="bgr" step="any" placeholder="Example: 150" required>
+                        <label for="bgr">Blood Glucose Random (bgr) mg/dL</label>
+                        <small>Random capillary blood glucose. e.g. 140</small>
+                        <input type="number" id="bgr" name="bgr" step="any" placeholder="e.g. 140" required>
                     </div>
                     <div class="form-field">
-                        <label>Blood Urea (bu) mg/dL</label>
-                        <small>Blood urea value. Example: 40</small>
-                        <input type="number" name="bu" step="any" placeholder="Example: 40" required>
+                        <label for="bu">Blood Urea (bu) mg/dL</label>
+                        <small>Protein breakdown metabolite. Normal: 15 – 45 mg/dL</small>
+                        <input type="number" id="bu" name="bu" step="any" placeholder="e.g. 35" required>
                     </div>
                     <div class="form-field">
-                        <label>Serum Creatinine (sc) mg/dL</label>
-                        <small>Important for eGFR calculation. Example: 1.2</small>
-                        <input type="number" name="sc" step="any" placeholder="Example: 1.2" required>
+                        <label for="sc">Serum Creatinine (sc) mg/dL</label>
+                        <small>Key filtration marker for eGFR. Normal: 0.6 – 1.2 mg/dL</small>
+                        <input type="number" id="sc" name="sc" step="any" placeholder="e.g. 1.1" required>
                     </div>
                     <div class="form-field">
-                        <label>Sodium (sod) mEq/L</label>
-                        <small>Sodium level from blood test. Example: 135</small>
-                        <input type="number" name="sod" step="any" placeholder="Example: 135" required>
+                        <label for="sod">Serum Sodium (sod) mEq/L</label>
+                        <small>Serum electrolyte level. Typical: 135 – 145 mEq/L</small>
+                        <input type="number" id="sod" name="sod" step="any" placeholder="e.g. 138" required>
                     </div>
                     <div class="form-field">
-                        <label>Potassium (pot) mEq/L</label>
-                        <small>Potassium level from blood test. Example: 4.5</small>
-                        <input type="number" name="pot" step="any" placeholder="Example: 4.5" required>
+                        <label for="pot">Serum Potassium (pot) mEq/L</label>
+                        <small>Renal electrolyte clearance. Typical: 3.5 – 5.0 mEq/L</small>
+                        <input type="number" id="pot" name="pot" step="any" placeholder="e.g. 4.2" required>
                     </div>
                     <div class="form-field">
-                        <label>Hemoglobin (hemo) g/dL</label>
-                        <small>Hemoglobin level from blood test. Example: 13.5</small>
-                        <input type="number" name="hemo" step="any" placeholder="Example: 13.5" required>
+                        <label for="hemo">Hemoglobin (hemo) g/dL</label>
+                        <small>Oxygen-carrying capacity. Normal: 12.0 – 16.5 g/dL</small>
+                        <input type="number" id="hemo" name="hemo" step="any" placeholder="e.g. 13.5" required>
                     </div>
                     <div class="form-field">
-                        <label>Packed Cell Volume (pcv) %</label>
-                        <small>Packed cell volume value. Example: 40</small>
-                        <input type="number" name="pcv" step="any" placeholder="Example: 40" required>
+                        <label for="pcv">Packed Cell Volume / Hematocrit (pcv) %</label>
+                        <small>Proportion of blood made up of RBCs. e.g. 40</small>
+                        <input type="number" id="pcv" name="pcv" step="any" placeholder="e.g. 40" required>
                     </div>
                     <div class="form-field">
-                        <label>White Blood Cell Count (wc) cells/cumm</label>
-                        <small>White blood cell count. Example: 9000</small>
-                        <input type="number" name="wc" step="any" placeholder="Example: 9000" required>
+                        <label for="wc">White Blood Cell Count (wc) cells/cumm</label>
+                        <small>Total leukocyte count. Normal: 4,000 – 11,000</small>
+                        <input type="number" id="wc" name="wc" step="any" placeholder="e.g. 8500" required>
                     </div>
                     <div class="form-field">
-                        <label>Red Blood Cell Count (rc) millions/cumm</label>
-                        <small>Red blood cell count. Example: 4.5</small>
-                        <input type="number" name="rc" step="any" placeholder="Example: 4.5" required>
+                        <label for="rc">Red Blood Cell Count (rc) millions/cumm</label>
+                        <small>Total erythrocyte count. Normal: 4.2 – 5.9</small>
+                        <input type="number" id="rc" name="rc" step="any" placeholder="e.g. 4.8" required>
                     </div>
                 </div>
             </div>
 
-            <!-- Section: Medical Condition Attributes -->
+            <!-- Section 4: Medical Condition Attributes -->
             <div class="form-section-card">
                 <h2>
-                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M9 14h6"/><path d="M9 18h6"/><path d="M9 10h6"/></svg>
-                    <span>Medical Condition Attributes</span>
+                    <div class="section-icon-container">
+                        <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                            <path d="M9 14h6" />
+                            <path d="M9 18h6" />
+                            <path d="M9 10h6" />
+                        </svg>
+                    </div>
+                    <span>4. Clinical Comorbidities & Physical Signs</span>
                 </h2>
                 <div class="form-grid">
                     <div class="form-field">
-                        <label>Hypertension (htn)</label>
-                        <small>Does the patient have hypertension?</small>
-                        <select name="htn" required>
-                            <option value="0">No</option>
-                            <option value="1">Yes</option>
+                        <label for="htn">Hypertension (htn)</label>
+                        <small>Diagnosed chronic elevated arterial blood pressure</small>
+                        <select id="htn" name="htn" required>
+                            <option value="0">No (Normotensive)</option>
+                            <option value="1">Yes (Hypertensive)</option>
                         </select>
                     </div>
                     <div class="form-field">
-                        <label>Diabetes Mellitus (dm)</label>
-                        <small>Does the patient have diabetes mellitus?</small>
-                        <select name="dm" required>
-                            <option value="0">No</option>
-                            <option value="1">Yes</option>
+                        <label for="dm">Diabetes Mellitus (dm)</label>
+                        <small>Diagnosed Type 1 or Type 2 Diabetes Mellitus</small>
+                        <select id="dm" name="dm" required>
+                            <option value="0">No (Non-diabetic)</option>
+                            <option value="1">Yes (Diabetic)</option>
                         </select>
                     </div>
                     <div class="form-field">
-                        <label>Coronary Artery Disease (cad)</label>
-                        <small>Does the patient have coronary artery disease?</small>
-                        <select name="cad" required>
-                            <option value="0">No</option>
-                            <option value="1">Yes</option>
+                        <label for="cad">Coronary Artery Disease (cad)</label>
+                        <small>Known ischemic heart or cardiovascular disease</small>
+                        <select id="cad" name="cad" required>
+                            <option value="0">No (Absent)</option>
+                            <option value="1">Yes (Present)</option>
                         </select>
                     </div>
                     <div class="form-field">
-                        <label>Appetite (appet)</label>
-                        <small>Patient appetite condition.</small>
-                        <select name="appet" required>
-                            <option value="0">Poor</option>
-                            <option value="1">Good</option>
+                        <label for="appet">Appetite Status (appet)</label>
+                        <small>General nutritional intake and appetite condition</small>
+                        <select id="appet" name="appet" required>
+                            <option value="1">Good (Normal dietary intake)</option>
+                            <option value="0">Poor (Anorexia or diminished intake)</option>
                         </select>
                     </div>
                     <div class="form-field">
-                        <label>Pedal Edema (pe)</label>
-                        <small>Swelling in feet or ankles.</small>
-                        <select name="pe" required>
-                            <option value="0">No</option>
-                            <option value="1">Yes</option>
+                        <label for="pe">Pedal Edema (pe)</label>
+                        <small>Fluid retention/swelling in lower extremities</small>
+                        <select id="pe" name="pe" required>
+                            <option value="0">No (No swelling)</option>
+                            <option value="1">Yes (Swelling present)</option>
                         </select>
                     </div>
                     <div class="form-field">
-                        <label>Anemia (ane)</label>
-                        <small>Does the patient have anemia?</small>
-                        <select name="ane" required>
-                            <option value="0">No</option>
-                            <option value="1">Yes</option>
+                        <label for="ane">Anemia Status (ane)</label>
+                        <small>Clinical deficiency in RBCs or hemoglobin count</small>
+                        <select id="ane" name="ane" required>
+                            <option value="0">No (Non-anemic)</option>
+                            <option value="1">Yes (Anemic)</option>
                         </select>
                     </div>
                 </div>
             </div>
 
-            <button type="submit" class="submit-btn">
-                <span>Predict CKD Status</span>
-                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            <!-- Submit Action Button -->
+            <button type="submit" class="submit-btn" id="submitBtn">
+                <span>Predict CKD Status & Staging</span>
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                </svg>
             </button>
 
         </form>
 
     </div>
 
+    <!-- Clinical Footer -->
     <footer>
         <p>&copy; 2026 Machine Learning Healthcare Screening System. All rights reserved.</p>
-        <p class="footer-sub">This system is designed as a screening tool. It does not replace professional medical advice, diagnosis, or treatment.</p>
+        <p class="footer-sub">
+            This predictive software is designed exclusively as an auxiliary clinical screening tool. It does not
+            replace professional medical diagnosis, laboratory confirmation, or physician judgment.
+        </p>
     </footer>
+
+    <script>
+        function setFormValues(data) {
+            for (const [key, val] of Object.entries(data)) {
+                const el = document.getElementsByName(key)[0];
+                if (el) {
+                    el.value = val;
+                    el.dispatchEvent(new Event('change'));
+                }
+            }
+        }
+
+        function fillHealthySample() {
+            setFormValues({
+                age: 38, sex: 'male',
+                sg: 1.025, al: 0, su: 0, rbc: 1, pc: 1, pcc: 0, ba: 0,
+                bp: 75, bgr: 95, bu: 24, sc: 0.8, sod: 140, pot: 4.2,
+                hemo: 15.2, pcv: 45, wc: 6800, rc: 5.2,
+                htn: 0, dm: 0, cad: 0, appet: 1, pe: 0, ane: 0
+            });
+        }
+
+        function fillStage1Sample() {
+            setFormValues({
+                age: 42, sex: 'female',
+                sg: 1.015, al: 2, su: 0, rbc: 0, pc: 1, pcc: 0, ba: 0,
+                bp: 85, bgr: 110, bu: 32, sc: 0.8, sod: 138, pot: 4.1,
+                hemo: 13.0, pcv: 39, wc: 7800, rc: 4.4,
+                htn: 1, dm: 0, cad: 0, appet: 1, pe: 0, ane: 0
+            });
+        }
+
+        function fillStage2Sample() {
+            setFormValues({
+                age: 55, sex: 'male',
+                sg: 1.015, al: 1, su: 1, rbc: 1, pc: 1, pcc: 0, ba: 0,
+                bp: 85, bgr: 135, bu: 42, sc: 1.25, sod: 136, pot: 4.4,
+                hemo: 12.2, pcv: 37, wc: 8200, rc: 4.2,
+                htn: 1, dm: 1, cad: 0, appet: 1, pe: 0, ane: 0
+            });
+        }
+
+        function fillAdvancedCkdSample() {
+            setFormValues({
+                age: 68, sex: 'female',
+                sg: 1.010, al: 3, su: 2, rbc: 0, pc: 0, pcc: 1, ba: 1,
+                bp: 95, bgr: 180, bu: 85, sc: 3.8, sod: 131, pot: 5.4,
+                hemo: 8.8, pcv: 27, wc: 11500, rc: 3.1,
+                htn: 1, dm: 1, cad: 1, appet: 0, pe: 1, ane: 1
+            });
+        }
+
+        function clearForm() {
+            document.getElementById('predictionForm').reset();
+        }
+    </script>
 
 </body>
 

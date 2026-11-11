@@ -37,23 +37,64 @@ def calculate_egfr(age, serum_creatinine, sex):
     return round(egfr, 2)
 
 
-def get_ckd_stage(egfr):
+def assess_ckd_and_stage(prediction_code, egfr, al, htn, dm):
     """
-    Estimate CKD stage based on eGFR value.
+    Determine CKD classification and staging based on ML model prediction,
+    eGFR calculation, and key clinical markers (albuminuria, hypertension, diabetes).
     """
+    # A patient has CKD if:
+    # 1. Model predicted CKD (prediction_code == 0)
+    # 2. Or eGFR < 60 mL/min (chronically reduced eGFR is clinically CKD Stage 3-5)
+    # 3. Or urine albumin >= 1 (albuminuria indicates kidney damage)
+    is_ckd = (prediction_code == 0) or (egfr < 60) or (al >= 1)
 
-    if egfr >= 90:
-        return "Stage 1", "Normal or high kidney function, but kidney damage may be present."
-    elif egfr >= 60:
-        return "Stage 2", "Mild decrease in kidney function."
-    elif egfr >= 45:
-        return "Stage 3a", "Mild to moderate decrease in kidney function."
-    elif egfr >= 30:
-        return "Stage 3b", "Moderate to severe decrease in kidney function."
-    elif egfr >= 15:
-        return "Stage 4", "Severe decrease in kidney function."
+    if not is_ckd:
+        status = "Normal"
+        result = "No CKD Detected"
+        stage = "Normal"
+        if egfr >= 90:
+            stage_description = (
+                f"Kidney function is within the normal healthy range (eGFR: {egfr} mL/min/1.73m²) "
+                "with no clinical signs of chronic kidney disease or kidney damage."
+            )
+        else:
+            stage_description = (
+                f"Kidney function is within expected limits (eGFR: {egfr} mL/min/1.73m²) "
+                "with no clinical markers of kidney damage detected (normal for age)."
+            )
     else:
-        return "Stage 5", "Kidney failure stage."
+        status = "CKD Detected"
+        result = "CKD Detected"
+
+        if egfr >= 90:
+            stage = "Stage 1"
+            stage_description = (
+                "eGFR remains within a normal range (90 mL/min or more), "
+                "but other test results suggest signs of kidney damage (such as albuminuria or hypertension)."
+            )
+        elif egfr >= 60:
+            stage = "Stage 2"
+            stage_description = (
+                "Slightly reduced kidney function (60 to 89 mL/min) "
+                "with other tests suggesting kidney damage."
+            )
+        elif egfr >= 30:
+            stage = "Stage 3"
+            stage_description = (
+                "Moderately reduced kidney function (30 to 59 mL/min)."
+            )
+        elif egfr >= 15:
+            stage = "Stage 4"
+            stage_description = (
+                "Severely reduced kidney function (15 to 29 mL/min)."
+            )
+        else:
+            stage = "Stage 5"
+            stage_description = (
+                "Very severe or end-stage kidney failure (Less than 15 mL/min)."
+            )
+
+    return status, result, stage, stage_description
 
 
 @app.route("/")
@@ -124,24 +165,35 @@ def predict():
 
         prediction = model.predict(input_data)
 
-        if prediction[0] == 0:
-            result = "CKD Detected"
+        # Always calculate eGFR using CKD-EPI 2021 equation
+        egfr = calculate_egfr(age, sc, sex)
 
-            egfr = calculate_egfr(age, sc, sex)
-            stage, stage_description = get_ckd_stage(egfr)
+        # Assess clinical classification, status, and precise CKD stage
+        status, result, stage, stage_description = assess_ckd_and_stage(
+            prediction[0], egfr, al, htn, dm
+        )
 
-        else:
-            result = "No CKD Detected"
-            egfr = "-"
-            stage = "Not Applicable"
-            stage_description = "CKD stage estimation is only shown when CKD is detected."
+        patient_summary = {
+            "Age": f"{int(age)} yrs",
+            "Sex": sex.capitalize(),
+            "Blood Pressure": f"{bp} mmHg",
+            "Serum Creatinine": f"{sc} mg/dL",
+            "Blood Glucose": f"{bgr} mg/dL",
+            "Blood Urea": f"{bu} mg/dL",
+            "Hemoglobin": f"{hemo} g/dL",
+            "Urine Albumin": f"{int(al)}/5",
+            "Hypertension": "Yes" if htn == 1 else "No",
+            "Diabetes Mellitus": "Yes" if dm == 1 else "No",
+        }
 
         return render_template(
             "result.html",
+            status=status,
             result=result,
             egfr=egfr,
             stage=stage,
-            stage_description=stage_description
+            stage_description=stage_description,
+            patient_summary=patient_summary
         )
 
     except Exception as e:
